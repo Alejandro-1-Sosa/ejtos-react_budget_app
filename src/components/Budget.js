@@ -9,10 +9,12 @@ const Budget = () => {
     setNewBudget(event.target.value);
   }
 
-  useEffect(() => {
-    // Runs whenever newBudget changes
+  // Budget.js
+useEffect(() => {
     dispatch({ type: 'UPDATE_BUDGET', payload: parseInt(newBudget, 10) });
-  }, [newBudget, dispatch]);
+    dispatch({ type: 'UPDATE_REMAINING' });
+}, [newBudget, dispatch]);
+
 
   return (
     <div className='alert alert-secondary'>
