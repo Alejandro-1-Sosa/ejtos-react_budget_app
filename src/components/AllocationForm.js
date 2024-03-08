@@ -2,23 +2,24 @@ import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 
 const AllocationForm = (props) => {
-    const { dispatch,remaining  } = useContext(AppContext);
+    const { dispatch,remaining, currency } = useContext(AppContext);
 
     const [name, setName] = useState('');
     const [cost, setCost] = useState('');
     const [action, setAction] = useState('');
 
     const submitEvent = () => {
+        const parsedCost = parseInt(cost);
 
-            if(cost > remaining) {
-                alert("The value cannot exceed remaining funds  £"+remaining);
+            if(parsedCost > remaining) {
+                alert("The value cannot exceed remaining funds " + currency +remaining);
                 setCost("");
                 return;
             }
 
         const expense = {
             name: name,
-            cost: parseInt(cost),
+            cost: parsedCost,
         };
         if(action === "Reduce") {
             dispatch({
@@ -35,6 +36,7 @@ const AllocationForm = (props) => {
 
     return (
         <div>
+            <h1>Change allocation</h1>
             <div className='row'>
 
             <div className="input-group mb-3" style={{ marginLeft: '2rem' }}>
@@ -59,6 +61,14 @@ const AllocationForm = (props) => {
                 <option value="Reduce" name="Reduce">Reduce</option>
                   </select>
 
+                  <label className="input-group-text" htmlFor="inputGroupSelect03" style={{ marginLeft: '2rem' }}>Currency</label>
+                    <select className="custom-select" id="inputGroupSelect03" defaultValue={currency} onChange={(event) => dispatch({ type: 'CHG_CURRENCY', payload: event.target.value })}>
+                        <option value="$">Dollar ($)</option>
+                        <option value="£">Pound (£)</option>
+                        <option value="€">Euro (€)</option>
+                        <option value="₹">Ruppee (₹)</option>
+                    </select>
+
                     <input
                         required='required'
                         type='number'
@@ -79,4 +89,3 @@ const AllocationForm = (props) => {
 };
 
 export default AllocationForm;
-
